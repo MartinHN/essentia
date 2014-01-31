@@ -61,7 +61,7 @@ def build(ctx):
                         use      = 'essentia ' + ctx.env.USES,
                         install_path = None)
 
-
+	build_example('standard', 'test1')
         build_example('standard', 'beatsmarker')
         build_example('standard', 'rhythmextractor_tempotap')
         build_example('standard', 'mfcc')
