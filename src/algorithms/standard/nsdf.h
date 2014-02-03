@@ -88,7 +88,7 @@ class Nsdf : public StreamingAlgorithmWrapper {
   Nsdf() {
     declareAlgorithm("Nsdf");
     declareInput(_signal, TOKEN, "array");
-    declareOutput(_correlation, TOKEN, "NSDF");
+    declareOutput(_correlation, TOKEN, "nsdf");
   }
 };
 

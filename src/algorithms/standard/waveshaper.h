@@ -96,7 +96,7 @@ class waveshaper : public StreamingAlgorithmWrapper {
   waveshaper() {
     declareAlgorithm("waveshaper");
     declareInput(_signal, TOKEN, "array");
-    declareOutput(_signalout, TOKEN, "autoCorrelation");
+    declareOutput(_signalout, TOKEN, "shaped_signal");
   }
 };
 

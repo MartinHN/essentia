@@ -43,7 +43,7 @@ class AutoCorrelationStretch : public Algorithm {
  public:
   AutoCorrelationStretch() : _fftBuffer(0), _corr(0), _paddedSignal(0) {
     declareInput(_signal, "array", "the array to be analyzed");
-    declareOutput(_correlation, "autoCorrelation", "the autocorrelation vector");
+    declareOutput(_correlation, "AutoCorrelationStretch", "the autocorrelation vector");
 
     _fft = AlgorithmFactory::create("FFT");
     _ifft = AlgorithmFactory::create("IFFT");
@@ -89,7 +89,7 @@ class AutoCorrelationStretch : public StreamingAlgorithmWrapper {
   AutoCorrelationStretch() {
     declareAlgorithm("AutoCorrelationStretch");
     declareInput(_signal, TOKEN, "array");
-    declareOutput(_correlation, TOKEN, "autoCorrelation");
+    declareOutput(_correlation, TOKEN, "AutoCorrelationStretch");
   }
 };
 
