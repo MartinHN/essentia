@@ -25,8 +25,7 @@ using namespace essentia;
 using namespace standard;
 
 
-namespace essentia {
-namespace standard {
+
 
 
 const char* waveshaper::name = "waveshaper";
@@ -41,6 +40,7 @@ const char* waveshaper::description = DOC(
 
 void waveshaper::configure() {
 
+_isAbs = parameter("isAbs").toBool();
 
   _p1x =  parameter("p1x").toReal();
   _p2x =  parameter("p2x").toReal();
@@ -51,9 +51,10 @@ void waveshaper::configure() {
   _p3y =  parameter("p3y").toReal();
   _p4y =  parameter("p4y").toReal();
 if(_p1x>=_p2x||_p2x>=_p3x||_p3x>=_p4x) throw EssentiaException("wrong Params or badly sorted p1x<p2x<p3x<p4x") ;
-  _c1 = (_p2y-_p1y)/(_p2x-_p1x);
-  _c2 = (_p3y-_p2y)/(_p3x-_p2x);
-  _c3 = (_p4y-_p3y)/(_p4x-_p3x);
+  _c1 = (_p2y-_p1y)*1.0/(_p2x-_p1x);
+  _c2 = (_p3y-_p2y)*1.0/(_p3x-_p2x);
+  _c3 = (_p4y-_p3y)*1.0/(_p4x-_p3x);
+  
   
 
 }
@@ -62,27 +63,30 @@ void waveshaper::compute() {
 
   const std::vector<Real>& signal = _signal.get();
   vector<Real>& signalout = _signalout.get();
-
-  if (signal.size() == 0) {
+	
+  if (int(signal.size()) <= 1) {
     signalout.resize(0);
+    throw EssentiaException("nosignal");
     return;
   }
   else{
-  int size = int(signal.size());
+  signalout.resize( int(signal.size()));
   
-  for(int i = 0 ; i< size;i++){
-  
-	if(signal[i]>_p1x&&signal[i]<=_p2x)  
-		signalout[i] = _p1y+(signal[i]-_p1x)*_c1;
-	else if(signal[i]>_p2x&&signal[i]<=_p3x) 
-		signalout[i] = _p2y+(signal[i]-_p2x)*_c2;
-	else if(signal[i]>_p3x&&signal[i]<=_p4x) 
-		signalout[i] = _p3y+(signal[i]-_p3x)*_c3;
-	else if(signal[i]<_p1x) 
-		signalout[i] = _p1y;
+  bool neg = false;
+  for(int i = 0 ; i< int(signal.size());i++){
+  Real cur = signal[i];
+  if(_isAbs){neg =cur<0; cur = abs(cur);} 
+	if(cur>_p1x&&cur<=_p2x)  
+		{signalout[i] = (Real)_p1y+(cur-_p1x)*_c1;}
+	else if(cur>_p2x&&cur<=_p3x) 
+		{signalout[i] = (Real)_p2y+(cur-_p2x)*_c2;}
+	else if(cur>_p3x&&cur<=_p4x) 
+		{signalout[i] = (Real)_p3y+(cur-_p3x)*_c3;}
+	else if(cur<_p1x) 
+		{signalout[i] = (Real)_p1y;}
 	else 
-		signalout[i] = _p4y;
-    
+		{signalout[i] = (Real)_p4y;}
+   if(_isAbs && neg){signalout[i] *=-1;}
   }
   
   }
@@ -93,5 +97,3 @@ void waveshaper::compute() {
 
 }
 
-}
-}

@@ -28,18 +28,10 @@ namespace standard {
 
 class waveshaper : public Algorithm {
 
- protected:
+ private:
   Input<std::vector<Real> > _signal;
   Output<std::vector<Real> > _signalout;
-double _p1x;
-double  _p2x;
-double  _p3x;
-double  _p4x;
-double  _p1y;
-double  _p2y;
-double  _p3y;
-double  _p4y;
-double _c1,_c2,_c3;
+
 
 
  public:
@@ -49,30 +41,40 @@ double _c1,_c2,_c3;
 
   }
 
-  ~waveshaper() {
-
-  }
-
   void declareParameters() {
-	declareParameter("p0x","coordinate","(-inf,inf)",0);
-	declareParameter("p0y","coordinate","(-inf,inf)",1);
-	declareParameter("p1x","coordinate","(-inf,inf)",2);
-	declareParameter("p1y","coordinate","(-inf,inf)",3);
-	declareParameter("p2x","coordinate","(-inf,inf)",4);
-	declareParameter("p2y","coordinate","(-inf,inf)",5);
-	declareParameter("p3x","coordinate","(-inf,inf)",6);
-	declareParameter("p3y","coordinate","(-inf,inf)",7);
+
+	declareParameter("p1x","coordinate","(-inf,inf)",0);
+	declareParameter("p1y","coordinate","(-inf,inf)",0);
+	declareParameter("p2x","coordinate","(-inf,inf)",0.3);
+	declareParameter("p2y","coordinate","(-inf,inf)",0.3);
+	declareParameter("p3x","coordinate","(-inf,inf)",0.6);
+	declareParameter("p3y","coordinate","(-inf,inf)",0.6);
+	declareParameter("p4x","coordinate","(-inf,inf)",1);
+	declareParameter("p4y","coordinate","(-inf,inf)",1);
+	declareParameter("isAbs","symetric mode","{true,false}", true);
   }
 
   void configure();
   void compute();
 
- protected:
-  void createFFTObject(int size);
 
- public:
   static const char* name;
   static const char* description;
+  
+  
+  private:
+	Real _p1x;
+	Real  _p2x;
+	Real  _p3x;
+	Real  _p4x;
+	Real  _p1y;
+	Real  _p2y;
+	Real  _p3y;
+	Real  _p4y;
+	double _c1;
+	double _c2;
+	double _c3;
+	bool _isAbs;
 
 };
 
