@@ -17,7 +17,7 @@
  * version 3 along with this program.  If not, see http://www.gnu.org/licenses/
  */
 
-#include "autocorrelationStretch.h"
+#include "autocorrelationstretch.h"
 #include "essentiamath.h"
 
 using namespace std;
