@@ -46,7 +46,12 @@ void Nsdf::configure() {
   else if (ntype == "unbiased") {
     _unbiasedNormalization = true;
   }
+_tauMax = min(int(ceil(_sampleRate / parameter("minFrequency").toReal())), _frameSize/2);
+  _tauMin = min(int(floor(_sampleRate / parameter("maxFrequency").toReal())), _frameSize/2);
 
+  if (_tauMax <= _tauMin) {
+    throw EssentiaException("PitchYinFFT: maxFrequency is lower than minFrequency, or they are too close, or they are out of the interval of detectable frequencies with respect to the specified frameSize. Minimum detectable frequency is ", _sampleRate / (_frameSize/2), " Hz");
+  }
   _fft->output("fft").set(_fftBuffer);
   _ifft->input("fft").set(_fftBuffer);
 }

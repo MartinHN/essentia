@@ -1,3 +1,5 @@
+#! /usr/bin/env python
+
 # Copyright (C) 2006-2013  Music Technology Group - Universitat Pompeu Fabra
 #
 # This file is part of Essentia
@@ -15,7 +17,7 @@
 # You should have received a copy of the Affero GNU General Public License
 # version 3 along with this program. If not, see http://www.gnu.org/licenses/
 
-#! /usr/bin/env python
+
 
 import sys, os
 import essentia, essentia.standard, essentia.streaming
