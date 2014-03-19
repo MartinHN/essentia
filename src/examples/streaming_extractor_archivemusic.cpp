@@ -49,7 +49,7 @@ void setExtractorOptions(Pool& pool);
 
 void usage() {
     cout << "Error: wrong number of arguments" << endl;
-    cout << "Usage: streaming_extractor_archive input_audiofile output_textfile" << endl;
+    cout << "Usage: streaming_extractor_archivemusic input_audiofile output_textfile" << endl;
     exit(1);
 }
 
@@ -117,7 +117,12 @@ void compute(const string& audioFilename, const string& outputFilename, Pool& po
   computeStep4(pool, options);
   
   Pool stats = computeAggregation(pool, options);
-  //addSVMDescriptors(stats); // TODO not available yet
+
+#if HAVE_GAIA2
+  addSVMDescriptors(stats);
+#else
+  cout << "Warning: Essentia was compiled without Gaia2 library, skipping process step 6 (cannot compute SVM models)" << endl;
+#endif
   
   outputToFile(stats, outputFilename, true);
   return;
@@ -467,16 +472,16 @@ void outputToFile(Pool& pool, const string& outputFilename, bool outputJSON) {
 void addSVMDescriptors(Pool& pool) {
   cout << "Process step 6: SVM Models" << endl;
   //const char* svmModels[] = {}; // leave this empty if you don't have any SVM models
-  const char* svmModels[] = { "genre_tzanetakis", "genre_dortmund",
-                              "genre_electronica", "genre_rosamerica",
+  const char* svmModels[] = { "danceability",
+                              "genre_dortmund", "genre_electronic",
+                              "genre_rosamerica", "genre_tzanetakis",
+                              "mirex_ballroom",
                               "mood_acoustic", "mood_aggressive",
                               "mood_electronic", "mood_happy",
                               "mood_party", "mood_relaxed", "mood_sad",
-                              "perceptual_speed", "timbre",
-                              "culture", "gender", "live_studio",
-                              "mirex-moods", "ballroom",
-                              "voice_instrumental"
-  };
+                              "moods_mirex", 
+                              "tonal_atonal", "voice_instrumental",
+                              "timbre", "culture", "gender"};
 
   string pathToSvmModels;
 
